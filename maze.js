@@ -29,7 +29,9 @@ function mazeSizeFn(maze) {
 
 // helper for personInitialPosition, returns the index in the inner array (a number)
 function findPerson(content) {
-  return content == '@';
+  // return content == '@';
+  return content !== 'X' && content !== "E" && content !== " ";
+
 }
 
 // returns position of the person (array with two elements, yAxisCoord & xAxisCoord), so that you can access the location by maze[yAxisCoord][xAxisCoord]
@@ -44,22 +46,32 @@ function personPositionFn() {
       if (xPosition != -1) {
         return [yAxisIterator, xPosition];
       }
+      else {
+        continue;
+      }
     }
 
   }
+
 }
+
+console.log(personPositionFn());
 
 function personFacingFn() {
   var position = personPositionFn();
   return maze[position[0]][position[1]];
 }
 
-console.log(personPositionFn());
-console.log(personFacingFn());
+//console.log(personPositionFn());
+//console.log(personFacingFn());
 
 // returns surroundings (N, E, S, W)
 function surroundingsFn() {
-  var currentPosition = personPositionFn(maze);
+
+  var currentPosition = personPositionFn();
+  if(!currentPosition){
+    debugger;
+  }
   var yAxisPosition = currentPosition[0];
   var xAxisPosition = currentPosition[1];
 
@@ -84,31 +96,102 @@ function surroundingsFn() {
 
 console.log(surroundingsFn());
 
-function changeDirection(){
-  var currentPosition = personPositionFn(maze);
+function orient(){
+  var currentPosition = personPositionFn();
   var yAxisPosition = currentPosition[0];
   var xAxisPosition = currentPosition[1];
   var showPerson = maze[yAxisPosition][xAxisPosition];
 
-  if (showPerson == "@"){
+  if (showPerson == "@") {
     maze[yAxisPosition][xAxisPosition] = "^";
   }
-  // placeholder which will tell us which way to face
 
 }
 
+// returns a string with chevron facing the next direction;
+function nextDirection(direction) {
+  if (direction == "north") {
+    return "^";
+  }
+  else if (direction == "east") {
+    return ">";
+  }
+  else if (direction == "south"){
+    return "v";
+  }
+  else if (direction == "west"){
+    return "<";
+  }
+}
 
-// returns array of [yAxixPosition, xAxisPosition] of the next step
-function whereToGo(){
+
+// returns array of [0]:[yAxixPosition, xAxisPosition] of the next step,
+// [1] content of the next tile (empty or exit),
+// [2] the direction it's about to move to help orient chevron
+
+function whereToGo() {
   var surroundings = surroundingsFn();
   var personFacing = personFacingFn();
+  console.log(surroundings, personFacing);
 
-  if (personFacing == "^"){
-    if surroundings.north !== "X" {
-      return [surroundings.northCoord, surroundings.north];
-    } else if {
-      return [surroundings.westCoord, surroundings.west];
+  if (personFacing == "^") {
+    if (surroundings.north !== "X") {
+      return [surroundings.northCoord, surroundings.north, "north"];
+    } else if (surroundings.west !== "X") {
+      return [surroundings.westCoord, surroundings.west, "west"];
+    }
+  } else if (personFacing == ">") {
+    if (surroundings.east !== "X") {
+      return [surroundings.eastCoord, surroundings.east, "east"];
+    } else if (surroundings.north !== "X") {
+      return [surroundings.northCoord, surroundings.north, "north"];
+    }
+  } else if (personFacing == "v") {
+    if (surroundings.south !== "X") {
+      return [surroundings.southCoord, surroundings.south, "south"];
+    } else if (surroundings.north !== "X") {
+      return [surroundings.eastCoord, surroundings.east, "east"];
+    }
+  } else if (personFacing == "<") {
+    if (surroundings.west !== "X") {
+      return [surroundings.westCoord, surroundings.west, "west"];
+    } else if (surroundings.south !== "X") {
+      return [surroundings.southCoord, surroundings.south, "south"];
     }
   }
+}
+
+function move(){
+  var destination = whereToGo();
+  var coordinatesOfMove = destination[0];
+  var coordinatesOfMoveY = coordinatesOfMove[0];
+  var coordinatesOfMoveX = coordinatesOfMove[1];
+  var emptyOrExit = destination[1];
+  var directionOfMove = destination[2];
+  console.log (coordinatesOfMove, emptyOrExit, directionOfMove);
+
+  var personPosition = personPositionFn();
+  var personPreviousY = personPosition[0];
+  var personsPreviousX = personPosition[1];
+
+  // move empty space to where the person was
+
+
+  // move person to where the space was
+
+
+  // console log the maze
 
 }
+
+function walkTheMaze(){
+  orient();
+  console.log(maze);
+  whereToGo();
+  console.log(whereToGo());
+  move();
+  console.log(maze);
+
+}
+
+walkTheMaze();

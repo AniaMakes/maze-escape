@@ -213,7 +213,7 @@ function move() {
   console.log(generateMazeString());
 
   document.open();
-  //document.body.innerHTML = '';
+//  document.body.innerHTML = '';
   document.write(generateMazeString());
   document.close();
   stepsSoFar++;
@@ -240,11 +240,14 @@ function generateMazeString (){
 
   var mazeString = "";
   var mazeOutput = []
+  mazeString = mazeString + "<pre>";
 
   for (var yAxisIterator = 0; yAxisIterator < yAxisLength; yAxisIterator++) {
     var arrayStr = maze[yAxisIterator].join(" ");
+
     mazeString = mazeString + "<br>" + arrayStr;
   }
+  mazeString = mazeString + "<pre>";
   return mazeString;
 
 }
@@ -252,15 +255,30 @@ function generateMazeString (){
 
 function walkTheMaze() {
   orient();
-  console.log(maze);
+  // TODO should be writing into a specific div
+  document.write(generateMazeString());
   whereToGo();
 
-  var whileChecker = "";
 
-  while (whileChecker != "completed") {
-    whileChecker = move();
+  function findTheExit(){
+    setInterval(function() {
+      var whileChecker = move();
+      if (whileChecker != "completed") {
+        findTheExit();
+      }
+    }, 2000);
   }
-
 }
+
+// function printWithDelay() {
+//   setTimeout(function() {
+//     console.log(pairsList[iteratingInt]);
+//     iteratingInt++;
+//     if (iteratingInt < pairsList.length) {
+//       printWithDelay();
+//     }
+//   }, 1000);
+// }
+
 
 walkTheMaze();

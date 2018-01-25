@@ -257,28 +257,27 @@ function walkTheMaze() {
   orient();
   // TODO should be writing into a specific div
   document.write(generateMazeString());
-  whereToGo();
-
+  console.log(whereToGo());
 
   function findTheExit(){
+    console.log("inside findTheExit");
     setInterval(function() {
+      console.log("inside the setInterval");
       var whileChecker = move();
       if (whileChecker != "completed") {
         findTheExit();
       }
     }, 2000);
   }
-}
 
-// function printWithDelay() {
-//   setTimeout(function() {
-//     console.log(pairsList[iteratingInt]);
-//     iteratingInt++;
-//     if (iteratingInt < pairsList.length) {
-//       printWithDelay();
-//     }
-//   }, 1000);
+  findTheExit();
+// var whileChecker = "";
+//
+//  while (whileChecker != "completed") {
+//    whileChecker = move();
 // }
 
+
+}
 
 walkTheMaze();

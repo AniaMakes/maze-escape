@@ -19,7 +19,8 @@ var maze = [
   ['X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X'],
   ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X', 'X']
 ];
-
+var journey = [];
+var stepsSoFar = 0;
 // function that return the size of the maze (array with two elements)
 function mazeSizeFn(maze) {
   var yAxis = maze.length;
@@ -172,13 +173,38 @@ function move(){
 
   var personPosition = personPositionFn();
   var personPreviousY = personPosition[0];
-  var personsPreviousX = personPosition[1];
+  var personPreviousX = personPosition[1];
 
   // move empty space to where the person was
-
+ maze[personPreviousY][personPreviousX] = " ";
 
   // move person to where the space was
+var newPersonDirection = "";
 
+if (directionOfMove == "north") {
+  newPersonDirection = "^";
+} else if ( directionOfMove == "east") {
+  newPersonDirection = ">";
+} else if (directionOfMove == "south") {
+  newPersonDirection = "v";
+} else if (directionOfMove == "west") {
+  newPersonDirection = "<";
+}
+
+maze[coordinatesOfMoveY][coordinatesOfMoveX] = newPersonDirection;
+
+journey.push(personPosition);
+// TODO implement clearing console before printing the new maze
+console.log(maze);
+stepsSoFar ++;
+
+if(emptyOrExit == "E") {
+  journey.push(coordinatesOfMove);
+  return "completed";
+} else {
+  console.log ("Steps so far: ${stepsSoFar}");
+  return "continue";
+}
 
   // console log the maze
 
@@ -188,10 +214,15 @@ function walkTheMaze(){
   orient();
   console.log(maze);
   whereToGo();
-  console.log(whereToGo());
-  move();
-  console.log(maze);
-
+  debugger;
+  if (move() != "completed"){
+    move();
+  }
+  else {
+    console.log("FINISHED");
+    console.log(journey);
+    console.log(stepsSoFar);
+  }
 }
 
 walkTheMaze();

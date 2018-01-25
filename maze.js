@@ -55,7 +55,7 @@ function personPositionFn() {
 
 }
 
-console.log(personPositionFn());
+// console.log(personPositionFn());
 
 function personFacingFn() {
   var position = personPositionFn();
@@ -94,7 +94,7 @@ function surroundingsFn() {
   return surroundingsObject;
 }
 
-console.log(surroundingsFn());
+// console.log(surroundingsFn());
 
 function orient() {
   var currentPosition = personPositionFn();
@@ -129,7 +129,7 @@ function nextDirection(direction) {
 function whereToGo() {
   var surroundings = surroundingsFn();
   var personFacing = personFacingFn();
-  console.log(surroundings, personFacing);
+  // console.log(surroundings, personFacing);
 
   if (personFacing == "^") {
     if (surroundings.east !== "X") {
@@ -184,7 +184,7 @@ function move() {
   var coordinatesOfMoveX = coordinatesOfMove[1];
   var emptyOrExit = destination[1];
   var directionOfMove = destination[2];
-  console.log(coordinatesOfMove, emptyOrExit, directionOfMove);
+  // console.log(coordinatesOfMove, emptyOrExit, directionOfMove);
 
   var personPosition = personPositionFn();
   var personPreviousY = personPosition[0];
@@ -210,20 +210,45 @@ function move() {
 
   journey.push(personPosition);
   // TODO implement clearing console before printing the new maze
-  console.log(maze);
+  console.log(generateMazeString());
+
+  document.open();
+  //document.body.innerHTML = '';
+  document.write(generateMazeString());
+  document.close();
   stepsSoFar++;
+  console.log(`Steps so far: ${stepsSoFar}`);
+
 
   if (emptyOrExit == "E") {
     journey.push(coordinatesOfMove);
+    // console.log(`The path you took: ${journey}`);
+    console.log(journey);
     return "completed";
   } else {
-    console.log("Steps so far: ${stepsSoFar}");
     return "continue";
   }
 
   // console log the maze
 
 }
+
+function generateMazeString (){
+  var mazeSize = mazeSizeFn(maze);
+  var yAxisLength = mazeSize[0];
+  var xAxisLength = mazeSize[1];
+
+  var mazeString = "";
+  var mazeOutput = []
+
+  for (var yAxisIterator = 0; yAxisIterator < yAxisLength; yAxisIterator++) {
+    var arrayStr = maze[yAxisIterator].join(" ");
+    mazeString = mazeString + "<br>" + arrayStr;
+  }
+  return mazeString;
+
+}
+
 
 function walkTheMaze() {
   orient();

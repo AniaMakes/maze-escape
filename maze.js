@@ -1,3 +1,6 @@
+// Pair programming exercise, Constructor Labs 25-Jan-2018
+// @AniaMakes & @fullo01
+
 var maze = [
   ['X', 'X', 'X', 'X', 'X', 'X', 'X', 'E', 'X', 'X', 'X', 'X', 'X', 'X', 'X'],
   ['X', ' ', ' ', ' ', ' ', ' ', ' ', ' ', 'X', ' ', ' ', ' ', ' ', ' ', 'X'],
